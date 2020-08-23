@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*- 
+# -*- coding: utf-8 -*-
 from bs4 import BeautifulSoup as BS
 import requests
 import json
@@ -17,7 +17,7 @@ while True:
     try:
         jsonFileName = input("\n Enter name of json file: ").replace(".json" , '')
         csvFileName = input(" Enter name of csv file: ").replace(".csv" , '')
-        excelFileName = input("\n Enter name of excel file: ").replace(".xls" , '')
+        excelFileName = input(" Enter name of excel file: ").replace(".xls" , '')
         fileJson = open(jsonFileName+'.json', 'w', encoding='utf8')
         csvFile = open(csvFileName+'.csv', 'w', encoding='utf8')
         excelFile = open(excelFileName+'.xls', 'w', encoding='utf8')
@@ -30,6 +30,7 @@ for page in range(pageNumber):
     page += 1
     print(f"-- {page} --")
     url = f"https://coreyms.com/page/{page}"
+    print(url)
     r = requests.get(url)
     soup = BS(r.content , "html.parser")
     threads = soup.findAll('article')
@@ -47,18 +48,18 @@ for page in range(pageNumber):
             dataJson = json.dumps(data , ensure_ascii=False)
             fileJson.write(dataJson + ',\n')
 fileJson.close()
-readJson = open(jsonFileName+'.json' , 'r', encoding='utf8')#فتح ملف الجوسون من جديد للقرائة
-stringJson = readJson.read()#اخذ البينات وتخزينها في متغير
-readJson.close()#اغلاق الجوسون بعد اخذ البينات
-editJson = stringJson.strip(',\n')#التعديل على البينات وازالة اخر فاصلة
-fileJson = open(jsonFileName+'.json', 'w', encoding='utf8')#فتح ملف الجوسون من جديد للكتابة
-fileJson.write(editJson + '\n]')#اضافة البيانات بعد تعديلها
-fileJson.close()#اغلاق الملف
+readJson = open(jsonFileName+'.json' , 'r', encoding='utf8')
+stringJson = readJson.read()
+readJson.close()
+editJson = stringJson.strip(',\n')
+fileJson = open(jsonFileName+'.json', 'w', encoding='utf8')
+fileJson.write(editJson + '\n]')
+fileJson.close()
 print(f"\n\n Done save all data on {jsonFileName}.json")
-readJson = pd.read_json(f"{jsonFileName}.json")#قرأت ملف الجوسون بعد اغلاقه لتفادي المشاكل
-readJson.to_csv(f"{csvFileName}.csv")#(csv)تحويل ملف الجوسون الى
+readJson = pd.read_json(f"{jsonFileName}.json")
+readJson.to_csv(f"{csvFileName}.csv")
 print(f"\n\n Done save all data on {csvFileName}.csv")
-readJson.to_excel(f"{excelFileName}.xls")#(excel)تحويل ملف الجوسون الى
+readJson.to_excel(f"{excelFileName}.xls")
 print(f"\n\n Done save all data on {excelFileName}.xls\n")
 csvFile.close()
 excelFile.close()
